@@ -61,15 +61,20 @@ def model_3():
 
 
 if __name__ == "__main__":
+    skip = False
     try:
         model_1()
     except:
+        skip = True
         print("FAILURE 1")
-    try:
-        model_2()
-    except:
-        print("FAILURE 2")
-    try:
-        model_3()
-    except:
-        print("FAILURE 3")
+    if not skip:
+        try:
+            model_2()
+        except:
+            skip = True
+            print("FAILURE 2")
+    if not skip:
+        try:
+            model_3()
+        except:
+            print("FAILURE 3")
