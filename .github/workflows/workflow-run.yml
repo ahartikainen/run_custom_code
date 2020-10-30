@@ -40,6 +40,7 @@ jobs:
             
             find /Users/runner/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs gsed -i 's/                msg.ParseFromString/                try:\n                    msg.ParseFromString/ w /dev/stdout'
             find /Users/runner/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs gsed -i 's/                yield msg/                except:\n                    print(pos, next_pos, fit_bytes[pos : pos + next_pos], flush=True)\n                yield msg/ w /dev/stdout'
+            find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py"  2>/dev/null | xargs cat
         if: matrix.os == 'macos-latest'
             
       - name: Inject prints (Linux)
@@ -49,6 +50,7 @@ jobs:
  
           find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/msg.ParseFromString/print(pos, next_pos, fit_bytes[pos : pos + next_pos], flush=True);msg.ParseFromString/ w /dev/stdout'
           find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/                yield msg/                except:\n                    print(pos, next_pos, fit_bytes[pos : pos + next_pos], flush=True)\n                yield msg/ w /dev/stdout'
+          find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py"  2>/dev/null | xargs cat
         if: matrix.os == 'ubuntu-latest'
         
       - name: Check versions
