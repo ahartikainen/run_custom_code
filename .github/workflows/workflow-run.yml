@@ -63,9 +63,9 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: exception_results_bin
-          path: *.bin
+          path: ./*.bin
 
       - uses: actions/upload-artifact@v2
         with:
           name: exception_results_txt
-          path: *.txt
+          path: ./*.txt
