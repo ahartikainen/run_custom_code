@@ -35,7 +35,9 @@ jobs:
         run: |
           python -c "import stan;print(stan)"
           python -c "import httpstan;print(httpstan)"
-          find /opt/hostedtoolcache/Python -type f -wholename "model.py" 2>/dev/null | xargs sed -i 's/msg.ParseFromString(fit_bytes[pos : pos + next_pos])/print(pos, next_pos, fit_bytes[pos : pos + next_pos], fit_bytes);msg.ParseFromString(fit_bytes[pos : pos + next_pos])/ w /dev/stdout'
+ 
+          find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py"
+          find /opt/hostedtoolcache/Python -type f -wholename "*stan/model.py" 2>/dev/null | xargs sed -i 's/                msg.ParseFromString(fit_bytes[pos : pos + next_pos])/                print(pos, next_pos, fit_bytes[pos : pos + next_pos], fit_bytes);msg.ParseFromString(fit_bytes[pos : pos + next_pos])/ w /dev/stdout'
       
       - name: Check versions
         run: |
