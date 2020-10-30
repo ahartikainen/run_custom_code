@@ -48,7 +48,7 @@ jobs:
           python -c "import stan;print(stan)"
           python -c "import httpstan;print(httpstan)"
  
-          find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/msg.ParseFromString/print(pos, next_pos, fit_bytes[pos : pos + next_pos], flush=True);msg.ParseFromString/ w /dev/stdout'
+          find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/                msg.ParseFromString/                try:\n                    msg.ParseFromString/ w /dev/stdout'
           find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/                yield msg/                except:\n                    print(pos, next_pos, fit_bytes[pos : pos + next_pos], flush=True)\n                yield msg/ w /dev/stdout'
           find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py"  2>/dev/null | xargs cat
         if: matrix.os == 'ubuntu-latest'
