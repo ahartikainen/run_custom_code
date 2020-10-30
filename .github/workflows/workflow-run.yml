@@ -1,0 +1,40 @@
+name: ModelRuns
+
+on:
+    push:
+      branches:
+        - '**'
+
+jobs:
+  models:
+    name: models
+    runs-on: [ubuntu-latest, macos-latest]
+    strategy:
+      matrix:
+        python-version: [3.8]
+      fail-fast: false
+    steps:
+      - name: Checkout github
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install python dependencies (pip)
+        run: |
+          pip install --upgrade pip wheel
+          pip install httpstan
+          pip install --pre pystan
+      
+      - name: Check versions
+        run: |
+          python -c 'import httpstan;print("HTTPStan version: {}".format(httpstan.__version__))'
+          python -c 'import stan;print("PyStan version: {}".format(stan.__version__))'
+
+      - name: Run models
+        run: |
+          python ../scripts/run_models.py
