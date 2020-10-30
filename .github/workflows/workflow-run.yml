@@ -34,7 +34,7 @@ jobs:
       - name: Inject prints
         run: |
           python -c "import stan;print(stan)"
-          Rscript -e "print(.libPaths())"
+          python -c "import httpstan;print(httpstan)"
           #find /opt/hostedtoolcache/Python /home/runner/work/_temp/Library /opt/R/3.6.3/lib/R/library -type f -wholename "*stan/model.py" 2>/dev/null | xargs sed -i "s/print(pos, next_pos, fit_bytes[pos : pos + next_pos], fit_bytes);msg.ParseFromString(fit_bytes[pos : pos + next_pos])/msg.ParseFromString(fit_bytes[pos : pos + next_pos])/ w /dev/stdout"
       
       - name: Check versions
