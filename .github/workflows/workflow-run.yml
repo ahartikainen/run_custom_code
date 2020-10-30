@@ -38,7 +38,7 @@ jobs:
             python -c "import stan;print(stan)"
             python -c "import httpstan;print(httpstan)"
 
-            find /Users/runner/hostedtoolcache/Python -type f -wholename "*/httpstan/services_stub.py" 2>/dev/null | xargs gsed -i 's/potential_readers, \[], \[], 0.01/potential_readers, [], [], 0.4// w /dev/stdout'
+            find /Users/runner/hostedtoolcache/Python -type f -wholename "*/httpstan/services_stub.py" 2>/dev/null | xargs gsed -i 's/potential_readers, \[], \[], 0.01/potential_readers, [], [], 0.4/ w /dev/stdout'
             find /Users/runner/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs gsed -i 's/                msg.ParseFromString/                try:\n                    msg.ParseFromString/ w /dev/stdout'
             find /Users/runner/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs gsed -i 's/                yield msg/                except:\n                    import platform\n                    with open(f"exception_file_{platform.system()}.bin", mode="wb") as f, open(f"exception_location_{platform.system()}.txt", "w") as f2:\n                        f.write(fit_bytes)\n                        print(pos, next_pos, file=f2)\n                        print(pos, next_pos, "\\n\\n", fit_bytes[pos : pos + next_pos], "\\n\\n", flush=True)\n                    raise\n                yield msg/ w /dev/stdout'
         if: matrix.os == 'macos-latest'
@@ -48,7 +48,7 @@ jobs:
           python -c "import stan;print(stan)"
           python -c "import httpstan;print(httpstan)"
 
-          find /opt/hostedtoolcache/Python -type f -wholename "*/httpstan/services_stub.py" 2>/dev/null | xargs sed -i 's/potential_readers, \[], \[], 0.01/potential_readers, [], [], 0.1// w /dev/stdout'
+          find /opt/hostedtoolcache/Python -type f -wholename "*/httpstan/services_stub.py" 2>/dev/null | xargs sed -i 's/potential_readers, \[], \[], 0.01/potential_readers, [], [], 0.4/ w /dev/stdout'
           find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/                msg.ParseFromString/                try:\n                    msg.ParseFromString/ w /dev/stdout'
           find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/                yield msg/                except:\n                    import platform\n                    with open(f"exception_file_{platform.system()}.bin", mode="wb") as f, open(f"exception_location_{platform.system()}.txt", "w") as f2:\n                        f.write(fit_bytes)\n                        print(pos, next_pos, file=f2)\n                        print(pos, next_pos, "\\n\\n", fit_bytes[pos : pos + next_pos], "\\n\\n", flush=True)\n                    \n                yield msg/ w /dev/stdout'
         if: matrix.os == 'ubuntu-latest'
