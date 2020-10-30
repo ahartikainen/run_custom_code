@@ -30,14 +30,25 @@ jobs:
           pip install --upgrade pip wheel
           pip install httpstan
           pip install --pre pystan
-      
-      - name: Inject prints
+    
+      - name: Inject prints (macOS)
+        run: |
+            brew install gnu-sed
+            
+            python -c "import stan;print(stan)"
+            python -c "import httpstan;print(httpstan)"
+            
+            find /Users/runner/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs gsed -i 's/msg.ParseFromString/print(pos, next_pos, fit_bytes[pos : pos + next_pos], flush=True);msg.ParseFromString/ w /dev/stdout'
+        if: matrix.os == 'macos-latest'
+            
+      - name: Inject prints (Linux)
         run: |
           python -c "import stan;print(stan)"
           python -c "import httpstan;print(httpstan)"
  
-          find /opt/hostedtoolcache/Python /Users/runner/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/msg.ParseFromString/print(pos, next_pos, fit_bytes[pos : pos + next_pos], flush=True);msg.ParseFromString/ w /dev/stdout'
-      
+          find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/msg.ParseFromString/print(pos, next_pos, fit_bytes[pos : pos + next_pos], flush=True);msg.ParseFromString/ w /dev/stdout'
+        if: matrix.os == 'ubuntu-latest'
+        
       - name: Check versions
         run: |
           python -c 'import httpstan;print("HTTPStan version: {}".format(httpstan.__version__))'
