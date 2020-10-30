@@ -39,7 +39,7 @@ jobs:
             python -c "import httpstan;print(httpstan)"
 
             find /Users/runner/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs gsed -i 's/                msg.ParseFromString/                try:\n                    msg.ParseFromString/ w /dev/stdout'
-            find /Users/runner/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs gsed -i 's/                yield msg/                except:\n                    with open("exception_file.bin", mode="wb") as f, open("exception_location.txt", "w") as f2:\n                        f.write(fit_bytes);print(pos, next_pos, file=f2);print(pos, next_pos, "\n\n", fit_bytes[pos : pos + next_pos], "\n\n", flush=True)\n                    raise\n                yield msg/ w /dev/stdout'
+            find /Users/runner/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs gsed -i 's/                yield msg/                except:\n                    with open("exception_file.bin", mode="wb") as f, open("exception_location.txt", "w") as f2:\n                        f.write(fit_bytes);print(pos, next_pos, file=f2);print(pos, next_pos, "\\n\\n", fit_bytes[pos : pos + next_pos], "\\n\\n", flush=True)\n                    raise\n                yield msg/ w /dev/stdout'
         if: matrix.os == 'macos-latest'
 
       - name: Inject prints (Linux)
@@ -48,7 +48,7 @@ jobs:
           python -c "import httpstan;print(httpstan)"
 
           find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/                msg.ParseFromString/                try:\n                    msg.ParseFromString/ w /dev/stdout'
-          find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/                yield msg/                except:\n                    with open("exception_file.bin", mode="wb") as f, open("exception_location.txt", "w") as f2:\n                        f.write(fit_bytes);print(pos, next_pos, file=f2);print(pos, next_pos, "\n\n", fit_bytes[pos : pos + next_pos], "\n\n", flush=True)\n                    \n                yield msg/ w /dev/stdout'
+          find /opt/hostedtoolcache/Python -type f -wholename "*/stan/model.py" 2>/dev/null | xargs sed -i 's/                yield msg/                except:\n                    with open("exception_file.bin", mode="wb") as f, open("exception_location.txt", "w") as f2:\n                        f.write(fit_bytes);print(pos, next_pos, file=f2);print(pos, next_pos, "\\n\\n", fit_bytes[pos : pos + next_pos], "\\n\\n", flush=True)\n                    \n                yield msg/ w /dev/stdout'
         if: matrix.os == 'ubuntu-latest'
 
       - name: Check versions
